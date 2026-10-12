@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>锋克锂电｜NFC售后落地页【多档案+Web‑NFC写入】</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft Yahei",sans-serif;}
+    body{background:#f5f7fa;color:#222;max-width:480px;margin:0 auto;background:#fff;padding-bottom:120px;}
+    .header{
+      background:#0f3480;
+      color:#fff;
+      padding:32px 20px;
+      text-align:center;
+    }
+    .logo-title{
+      font-size:34px;
+      font-weight:bold;
+      margin-bottom:8px;
+    }
+    .slogan{
+      font-size:16px;
+      opacity:0.9;
+    }
+    .ad-tagline{
+      font-size:15px;
+      margin:12px 0;
+      line-height:1.6;
+    }
+    .sub-slogan{
+      margin-top:16px;
+      background:#d62828;
+      padding:12px;
+      border-radius:8px;
+      font-size:17px;
+    }
+    .brand-slogan-wrap{
+      padding:20px 16px;
+      background:#f0f4fc;
+    }
+    .brand-slogan-title{
+      text-align:center;
+      font-size:20px;
+      font-weight:bold;
+      color:#0f3480;
+      margin-bottom:14px;
+    }
+    .marquee-box{
+      width:100%;
+      overflow:hidden;
+      background:#fff;
+      border:1px solid #0f3480;
+      border-radius:8px;
+      padding:12px 0;
+    }
+    .marquee-text{
+      white-space:nowrap;
+      display:inline-block;
+      font-size:15px;
+      padding-left:100%;
+      animation:marquee 25s linear infinite;
+    }
+    @keyframes marquee{
+      0%{transform:translateX(0);}
+      100%{transform:translateX(-100%);}
+    }
+    .service-wrap{
+      padding:24px 16px;
+    }
+    .block-title{
+      font-size:22px;
+      font-weight:bold;
+      text-align:center;
+      margin-bottom:20px;
+      color:#0f3480;
+    }
+    .cards{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+    .item-card{
+      border:2px solid #0f3480;
+      border-radius:10px;
+      padding:18px 10px;
+      text-align:center;
+    }
+    .item-card p{
+      font-size:15px;
+      font-weight:500;
+    }
+    .param-wrap{
+      margin:10px 16px 24px;
+      border:2px solid #0f3480;
+      border-radius:12px;
+      padding:22px 18px;
+    }
+    .param-title{
+      font-size:20px;
+      font-weight:bold;
+      color:#0f3480;
+      margin-bottom:16px;
+      text-align:center;
+    }
+    .param-row{
+      display:flex;
+      justify-content:space-between;
+      padding:10px 0;
+      border-bottom:1px solid #ddd;
+      font-size:16px;
+      align-items:center;
+    }
+    .param-row:last-child{border-bottom:none;}
+    .param-edit{
+      min-width:120px;
+      text-align:right;
+      outline:none;
+      cursor:text;
+    }
+    .param-edit:empty::before{
+      content:attr(data-placeholder);
+      color:#aaaaaa;
+      pointer-events:none;
+    }
+    .archive-bar{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+    .archive-tag{
+      padding:6px 10px;
+      border-radius:6px;
+      border:1px solid #0f3480;
+      font-size:13px;
+    }
+    .archive-tag.active{
+      background:#0f3480;
+      color:#fff;
+    }
+    .param-btn-group{
+      margin-top:20px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    .param-btn-group.row2{
+      grid-template-columns:1fr 1fr 1fr;
+    }
+    .param-btn-group.row3{
+      grid-template-columns:1fr;
+    }
+    .param-btn{
+      padding:10px;
+      border:none;
+      border-radius:8px;
+      font-size:13px;
+      color:#fff;
+    }
+    .btn-copy{background-color:#0f3480;}
+    .btn-clear{background-color:#d62828;}
+    .btn-export{background-color:#2060c0;}
+    .btn-import{background-color:#288842;}
+    .btn-new{background-color:#7b2cbf;}
+    .btn-del{background-color:#992222;}
+    .btn-nfc{background-color:#007799;}
+    .modal-mask{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.5);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:99;
+      padding:16px;
+    }
+    .modal-box{
+      width:100%;
+      max-width:420px;
+      background:#fff;
+      border-radius:10px;
+      padding:20px;
+    }
+    .modal-box textarea{
+      width:100%;
+      height:140px;
+      border:1px solid #ccc;
+      padding:10px;
+      margin:10px 0;
+      font-size:14px;
+    }
+    .modal-buttons{
+      display:flex;gap:10px;
+    }
+    .modal-buttons button{
+      flex:1;padding:10px;border:none;border-radius:6px;
+    }
+    .book-wrap{
+      background:#0f3480;
+      color:#fff;
+      margin:0 16px 80px;
+      border-radius:12px;
+      padding:26px 20px;
+      text-align:center;
+    }
+    .tel{
+      font-size:24px;
+      font-weight:bold;
+      margin:14px 0;
+    }
+    .qrcode-tip{
+      margin-top:16px;
+      font-size:15px;
+    }
+    .fixed-nav{
+      position:fixed;
+      bottom:0;
+      left:50%;
+      transform:translateX(-50%);
+      max-width:480px;
+      width:100%;
+      display:flex;
+      background:#0f3480;
+    }
+    .nav-item{
+      flex:1;
+      text-align:center;
+      padding:14px 0;
+      color:#fff;
+      font-size:14px;
+    }
+  </style>
+</head>
+<body>
+<section class="header">
+  <div class="logo-title">锋克锂电</div>
+  <div class="slogan">为锂电安全再上一个新高度</div>
+  <div class="ad-tagline">广东锋克锂电｜锋行天下 · 克守品质</div>
+  <div class="sub-slogan">锋克服务车 · 售后零距离</div>
+</section>
+
+<section class="brand-slogan-wrap">
+  <div class="brand-slogan-title">🔊锋克理念</div>
+  <div class="marquee-box">
+    <div class="marquee-text">
+      锋行天下，克守品质，老百姓用得起的好锂电！ ◆ 广东锋克锂电，安全为基，续航为本，售后无忧！ ◆ 选锋克锂电，品质看得见，服务在身边！ ◆ 源头工厂锋克锂电，好电芯铸就好电池！
+    </div>
+  </div>
+</section>
+
+<section class="service-wrap">
+  <div class="block-title">售后服务能力</div>
+  <div class="cards">
+    <div class="item-card"><p>全套锂电检测</p></div>
+    <div class="item-card"><p>便民服务</p></div>
+    <div class="item-card"><p>上门检测</p></div>
+    <div class="item-card"><p>免费救援</p></div>
+  </div>
+</section>
+
+<section class="param-wrap">
+  <div class="param-title">🔋电池组详情</div>
+  <div class="archive-bar" id="archiveBar"></div>
+
+  <div class="param-row">
+    <span>电池型号：</span>
+    <div class="param-edit" data-key="model" contenteditable="plaintext-only" data-placeholder="点击填写"></div>
+  </div>
+  <div class="param-row">
+    <span>额定电压：</span>
+    <div class="param-edit" data-key="voltage" contenteditable="plaintext-only" data-placeholder="点击填写"></div>
+  </div>
+  <div class="param-row">
+    <span>额定容量：</span>
+    <div class="param-edit" data-key="capacity" contenteditable="plaintext-only" data-placeholder="点击填写"></div>
+  </div>
+  <div class="param-row">
+    <span>保护板：</span>
+    <div class="param-edit" data-key="bms" contenteditable="plaintext-only" data-placeholder="点击填写"></div>
+  </div>
+  <div class="param-row">
+    <span>电芯类型：</span>
+    <div class="param-edit" data-key="cell" contenteditable="plaintext-only" data-placeholder="点击填写"></div>
+  </div>
+  <div class="param-row">
+    <span>出厂日期：</span>
+    <div class="param-edit" data-key="mfgDate" contenteditable="plaintext-only" data-placeholder="点击填写"></div>
+  </div>
+  <div class="param-row">
+    <span>质保期限：</span>
+    <div class="param-edit" data-key="warranty" contenteditable="plaintext-only" data-placeholder="点击填写"></div>
+  </div>
+  <div class="param-row">
+    <span>设备SN码：</span>
+    <div class="param-edit" data-key="sn" contenteditable="plaintext-only" data-placeholder="点击填写"></div>
+  </div>
+
+  <div class="param-btn-group">
+    <button class="param-btn btn-copy">复制全部参数</button>
+    <button class="param-btn btn-clear">清空当前档案</button>
+    <button class="param-btn btn-export">导出TXT</button>
+    <button class="param-btn btn-import">导入文本</button>
+  </div>
+  <div class="param-btn-group row2" style="margin-top:10px;">
+    <button class="param-btn btn-new">新建电池档案</button>
+    <button class="param-btn btn-del">删除本档案</button>
+  </div>
+  <div class="param-btn-group row3" style="margin-top:10px;">
+    <button class="param-btn btn-nfc" id="btnNfcWrite">📡 写入NFC标签（安卓Chrome）</button>
+  </div>
+</section>
+
+<div class="modal-mask" id="importModal">
+  <div class="modal-box">
+    <h4>粘贴导入参数文本</h4>
+    <textarea id="importText" placeholder="粘贴复制出来的锋克电池参数"></textarea>
+    <div class="modal-buttons">
+      <button id="modalCancel">取消</button>
+      <button id="modalOk" style="background:#0f3480;color:white;">确认导入</button>
+    </div>
+  </div>
+</div>
+
+<section class="book-wrap">
+  <h3>预约上门服务｜应急救援</h3>
+  <div class="tel">📞 135‑3995‑6676</div>
+  <div class="qrcode-tip">扫码预约服务<br />【此处放置二维码图片】</div>
+</section>
+
+<div class="fixed-nav">
+  <div class="nav-item">首页</div>
+  <div class="nav-item">电池参数</div>
+  <div class="nav-item">预约服务</div>
+</div>
+
+<script>
+const fieldMap = [
+  {key:"model", label:"电池型号"},
+  {key:"voltage", label:"额定电压"},
+  {key:"capacity", label:"额定容量"},
+  {key:"bms", label:"保护板"},
+  {key:"cell", label:"电芯类型"},
+  {key:"mfgDate", label:"出厂日期"},
+  {key:"warranty", label:"质保期限"},
+  {key:"sn", label:"设备SN码"},
+];
+const STORAGE_KEY = "fengke_multi_battery";
+let state = { activeId: null, archives: [] };
+
+function loadAll(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(raw){
+    state = JSON.parse(raw);
+  }else{
+    const id = makeId();
+    state.archives.push({id, name:"档案1", data:{}});
+    state.activeId = id;
+    saveStore();
+  }
+  renderArchiveTags();
+  renderCurrentArchive();
+}
+
+function saveStore(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function makeId(){
+  return Date.now().toString(36)+Math.random().toString(36).slice(2);
+}
+
+function getActiveArchive(){
+  return state.archives.find(a=>a.id === state.activeId);
+}
+
+function renderArchiveTags(){
+  const bar = document.getElementById("archiveBar");
+  bar.innerHTML = "";
+  state.archives.forEach(arc=>{
+    const span = document.createElement("span");
+    span.className = "archive-tag"+(arc.id===state.activeId?" active":"");
+    span.innerText = arc.name;
+    span.onclick = ()=>{
+      state.activeId = arc.id;
+      saveStore();
+      renderArchiveTags();
+      renderCurrentArchive();
+    }
+    bar.appendChild(span);
+  })
+}
+
+function renderCurrentArchive(){
+  const arc = getActiveArchive();
+  document.querySelectorAll(".param-edit").forEach(el=>{
+    const k = el.dataset.key;
+    el.innerText = arc.data[k]||"";
+  })
+}
+
+function saveField(el){
+  const key = el.dataset.key;
+  const arc = getActiveArchive();
+  arc.data[key] = el.innerText.trim();
+  if(key==="model" && el.innerText.trim()){
+    arc.name = el.innerText.trim();
+    renderArchiveTags();
+  }
+  saveStore();
+}
+
+function copyAll(){
+  const arc = getActiveArchive();
+  let text = "";
+  fieldMap.forEach(f=>{
+    text += `${f.label}：${arc.data[f.key]||""}\n`;
+  })
+  navigator.clipboard.writeText(text).then(()=>{
+    alert("✅参数已复制剪贴板");
+  }).catch(()=>alert("复制失败"));
+}
+
+function clearCurrent(){
+  if(!confirm("⚠确定清空当前档案所有参数？")) return;
+  const arc = getActiveArchive();
+  arc.data = {};
+  saveStore();
+  renderCurrentArchive();
+}
+
+function exportTxt(){
+  const arc = getActiveArchive();
+  let text = "";
+  fieldMap.forEach(f=>{
+    text += `${f.label}：${arc.data[f.key]||""}\n`;
+  })
+  const blob = new Blob([text],{type:"text/plain;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `锋克锂电_${arc.name||"未命名"}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+const modal = document.getElementById("importModal");
+document.querySelector(".btn-import").onclick = ()=>{
+  modal.style.display="flex";
+  document.getElementById("importText").value="";
+}
+document.getElementById("modalCancel").onclick = ()=>{modal.style.display="none";}
+
+document.getElementById("modalOk").onclick = ()=>{
+  const txt = document.getElementById("importText").value;
+  const lines = txt.split("\n");
+  const arc = getActiveArchive();
+  lines.forEach(line=>{
+    fieldMap.forEach(f=>{
+      if(line.startsWith(f.label+"：")){
+        const val = line.replace(f.label+"：","").trim();
+        arc.data[f.key] = val;
+      }
+    })
+  })
+  saveStore();
+  renderCurrentArchive();
+  modal.style.display="none";
+  alert("✅导入完成");
+}
+
+document.querySelector(".btn-new").onclick = ()=>{
+  const newId = makeId();
+  const newArc = {id:newId, name:`档案${state.archives.length+1}`, data:{}};
+  state.archives.push(newArc);
+  state.activeId = newId;
+  saveStore();
+  renderArchiveTags();
+  renderCurrentArchive();
+}
+
+document.querySelector(".btn-del").onclick = ()=>{
+  if(state.archives.length<=1){
+    alert("至少保留一条档案，不能全部删除");
+    return;
+  }
+  if(!confirm("⚠确认删除当前档案，数据不可恢复！")) return;
+  const idx = state.archives.findIndex(a=>a.id===state.activeId);
+  state.archives.splice(idx,1);
+  state.activeId = state.archives[0].id;
+  saveStore();
+  renderArchiveTags();
+  renderCurrentArchive();
+}
+
+async function nfcWriteTag(){
+  const arc = getActiveArchive();
+  let payloadText = "";
+  fieldMap.forEach(f=>{
+    payloadText += `${f.label}：${arc.data[f.key]||""}\n`;
+  });
+  if(!payloadText.trim()){
+    alert("⚠没有可写入的参数，请先填写电池信息！");
+    return;
+  }
+  if (!('NDEFReader' in window)) {
+    alert("❌你的设备浏览器不支持Web‑NFC，仅安卓Chrome + HTTPS下可用；iOS苹果系统网页不支持NFC写入");
+    return;
+  }
+  try{
+    const ndef = new NDEFReader();
+    await ndef.write({ records: [{ recordType:"text", data:payloadText }] });
+    alert("✅请把NFC标签贴近手机背面，写入完成！");
+  }catch(err){
+    console.error(err);
+    alert("NFC写入失败："+err.message);
+  }
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  loadAll();
+  document.querySelectorAll(".param-edit").forEach(el=>{
+    el.addEventListener("blur", ()=> saveField(el));
+  })
+  document.querySelector(".btn-copy").addEventListener("click", copyAll);
+  document.querySelector(".btn-clear").addEventListener("click", clearCurrent);
+  document.querySelector(".btn-export").addEventListener("click", exportTxt);
+  document.getElementById("btnNfcWrite").addEventListener("click", nfcWriteTag);
+})
+</script>
+</body>
+</html>
